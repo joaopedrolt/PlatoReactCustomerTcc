@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import DashBoard from "../components/DashBoard";
 import { Frame } from "../components/Frame";
 import IssueOrder from "../components/IssueOrder";
@@ -33,6 +33,8 @@ const MainRoutes = () => {
             <Frame page={<Orders navigate={navigate}></Orders>}></Frame>
           </RequireAuth>
         } />
+        
+        <Route path="*" element={<Navigate to={"/"} />} />
       </Routes>
     </>
   )
