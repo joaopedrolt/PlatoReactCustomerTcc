@@ -6,6 +6,7 @@ import Login from "../components/login/Login";
 import SignUp from "../components/login/SignUp";
 import Orders from "../components/Orders";
 import '../css/default.css'
+import { RequireAuth } from "../RequireAuth";
 
 const MainRoutes = () => {
 
@@ -18,13 +19,19 @@ const MainRoutes = () => {
         <Route path="/cadastro" element={<SignUp navigate={navigate}></SignUp>} />
 
         <Route path="/cliente/dashboard" element={
-          <Frame page={<DashBoard navigate={navigate}></DashBoard>}></Frame>
+          <RequireAuth>
+            <Frame page={<DashBoard navigate={navigate}></DashBoard>}></Frame>
+          </RequireAuth>
         } />
         <Route path="/cliente/emitirpedido" element={
-          <Frame page={<IssueOrder navigate={navigate}></IssueOrder>}></Frame>
+          <RequireAuth>
+            <Frame page={<IssueOrder navigate={navigate}></IssueOrder>}></Frame>
+          </RequireAuth>
         } />
         <Route path="/cliente/pedidos" element={
-          <Frame page={<Orders navigate={navigate}></Orders>}></Frame>
+          <RequireAuth>
+            <Frame page={<Orders navigate={navigate}></Orders>}></Frame>
+          </RequireAuth>
         } />
       </Routes>
     </>

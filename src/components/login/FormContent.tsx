@@ -47,7 +47,7 @@ export const FormContent = ({ navigate }: Navigate) => {
 
                 const loggedCustomer = { name, cnpj }
 
-                localStorage.setItem('user_info', JSON.stringify({ name, cnpj }))
+                localStorage.setItem('user_info', JSON.stringify({ name, cnpj, logged: true }))
 
                 if (setCustomer) {
                     setCustomer(loggedCustomer)
