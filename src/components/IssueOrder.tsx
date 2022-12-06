@@ -73,6 +73,18 @@ const IssueOrder = ({ navigate }: Navigate) => {
         }
     }
 
+    const HandleClickReset = () => {
+        setBudget(false);
+        setInputDesc('');
+        setInputWeight(0);
+        setCepIn('');
+        setCepOut('');
+        setInputAddressIn('');
+        setInputAddressOut('');
+        setInputNumIn('');
+        setInputNumOut('');
+    }
+
     const HandleClickIssue = async () => {
 
         const { cnpj } = customer;
@@ -109,47 +121,62 @@ const IssueOrder = ({ navigate }: Navigate) => {
                     <div className="row">
                         <div className="field" id="desc-field">
                             <span>Descrição</span>
-                            <input value={inputDesc} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInputDesc(e.target.value) }} type='text' className="content-field"></input>
+                            {!budget && <input value={inputDesc} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInputDesc(e.target.value) }} type='text' className="content-field"></input>}
+                            {budget && <input readOnly value={inputDesc} type='text' className="content-field"></input>}
                         </div>
                     </div>
                     <div className="row">
                         <div className="field" id="weith-field">
                             <span>Peso (Kg)</span>
-                            <input value={inputWeight} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInputWeight(parseFloat(e.target.value)) }} type='number' className="content-field"></input>
+                            {!budget ? <input value={inputWeight} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInputWeight(parseFloat(e.target.value)) }} type='number' className="content-field"></input> :
+                                <input readOnly value={inputWeight} type='number' className="content-field"></input>
+                            }
                         </div>
                     </div>
                     <div className="row">
                         <div className="field" id="cep-in">
                             <span>Cep - Retirada</span>
-                            <IMaskInput onComplete={(value) => { HandleCepAddressIn(value) }} mask="00000-000" />
+                            {!budget ? <IMaskInput onComplete={(value) => { HandleCepAddressIn(value) }} mask="00000-000" /> :
+                                <input readOnly value={cepIn} type='text' className="content-field"></input>
+                            }
                         </div>
                         <div className="field" id="cep-out">
                             <span>Cep - Entrega</span>
-                            <IMaskInput onComplete={(value) => { HandleCepAddressOut(value) }} mask="00000-000" />
+                            {!budget ? <IMaskInput onComplete={(value) => { HandleCepAddressOut(value) }} mask="00000-000" /> :
+                                <input readOnly value={cepOut} type='text' className="content-field"></input>
+                            }
                         </div>
                     </div>
                     <div className="row">
                         <div className="field" id="address-out-field">
                             <span>Endereço de Retirada</span>
-                            <input readOnly value={inputAddressIn} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInputAddressIn(e.target.value) }} className="content-field"></input>
+                            {!budget ? <input readOnly value={inputAddressIn} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInputAddressIn(e.target.value) }} className="content-field"></input> :
+                                <input readOnly value={inputAddressIn} className="content-field"></input>
+                            }
                         </div>
                     </div>
                     <div className="row">
                         <div className="field" id="address-in-field">
                             <span>Número do Endereço de Retirada</span>
-                            <input value={inputNumIn} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInputNumIn(e.target.value) }} className="content-field"></input>
+                            {!budget ? <input value={inputNumIn} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInputNumIn(e.target.value) }} className="content-field"></input> :
+                                <input readOnly value={inputNumIn} className="content-field"></input>
+                            }
                         </div>
                     </div>
                     <div className="row">
                         <div className="field" id="address-in-field">
                             <span>Endereço de Entrega</span>
-                            <input readOnly value={inputAddressOut} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInputAddressOut(e.target.value) }} className="content-field"></input>
+                            {!budget ? <input readOnly value={inputAddressOut} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInputAddressOut(e.target.value) }} className="content-field"></input> :
+                                <input readOnly value={inputAddressOut} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInputAddressOut(e.target.value) }} className="content-field"></input>
+                            }
                         </div>
                     </div>
                     <div className="row">
                         <div className="field" id="address-in-field">
                             <span>Número Endereço de Entrega</span>
-                            <input value={inputNumOut} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInputNumOut(e.target.value) }} className="content-field"></input>
+                            {!budget ? <input value={inputNumOut} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInputNumOut(e.target.value) }} className="content-field"></input> :
+                                <input readOnly value={inputNumOut} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setInputNumOut(e.target.value) }} className="content-field"></input>
+                            }
                         </div>
                     </div>
                     {budget &&
@@ -163,8 +190,13 @@ const IssueOrder = ({ navigate }: Navigate) => {
                 </div>
             </div>
             <div className="button-mobile-container">
-                {!budget && <button onClick={HandleClickBudget} className="button-mobile button-green">Gerar Orçamento</button>}
-                {budget && <button onClick={HandleClickIssue} className="button-mobile">Emitir Pedido</button>}
+                {!budget &&
+                    <button onClick={HandleClickBudget} className="button-mobile button-green">Gerar Orçamento</button>
+                }
+                {budget && <>
+                    <button onClick={HandleClickIssue} className="button-mobile">Emitir Pedido</button>
+                    <button onClick={HandleClickReset} className="button-mobile button-blue">Novo Orçamento</button>
+                </>}
             </div>
         </div>
     );

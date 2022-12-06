@@ -34,20 +34,43 @@ const SignUp = ({ navigate }: Navigate) => {
     }
 
     const HandleSignup = async () => {
-        if (inputNome == '' || inputCnpj.length != 18 || inputNum.length != 15 || inputEmail == '' || inputSenha == '') {
-            alert('Insira os dados corretamente!');
-        } else {
-            const newCustomer: CustomerAdd = {
-                name: inputNome,
-                cnpj: inputCnpj,
-                numero: inputNum,
-                email: inputEmail,
-                password: inputSenha
-            }
-            await api.addCustomer(newCustomer);
-            alert('Cadastrado com Sucesso!');
-            navigate('/');
+
+        const customerValidation = {
+            email: inputEmail,
+            cnpj: inputCnpj
         }
+
+        const validation = await api.customerEmailCnpj(customerValidation);
+
+        console.log('test: ', validation);
+
+        if (!validation) {
+            alert('Não foi possivel verificar os dados!');
+        } else if (validation) {
+            if (!validation.cnpj && !validation.email) {
+                alert('Cnpj e Email já utilizados!');
+            } else if (!validation.cnpj) {
+                alert('Cnpj já utilizado!');
+            } else if (!validation.email) {
+                alert('Email já utilizado!');
+            } else {
+                if (inputNome == '' || inputCnpj.length != 18 || inputNum.length != 15 || inputEmail == '' || inputSenha == '') {
+                    alert('Insira os dados corretamente!');
+                } else {
+                    const newCustomer: CustomerAdd = {
+                        name: inputNome,
+                        cnpj: inputCnpj,
+                        numero: inputNum,
+                        email: inputEmail,
+                        password: inputSenha
+                    }
+                    await api.addCustomer(newCustomer);
+                    alert('Cadastrado com Sucesso!');
+                    navigate('/');
+                }
+            }
+        }
+
     }
 
     return (

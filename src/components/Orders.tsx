@@ -20,13 +20,11 @@ const Orders = ({ navigate }: Navigate) => {
 
     async function Get() {
         try {
-            const ordersIds = await api.getOrdersId(cnpj);
-            if (ordersIds.length > 0) {
-                const orders: Order[] = await api.getOrders(cnpj);
-                if (orders.length > 0) {
-                    setOrders(orders)
-                    setHasUser(true);
-                }
+
+            const orders: Order[] = await api.getOrders(cnpj);
+            if (orders.length > 0) {
+                setOrders(orders)
+                setHasUser(true);
             } else {
                 setOrders([]);
                 setHasUser(false);
@@ -46,14 +44,20 @@ const Orders = ({ navigate }: Navigate) => {
         navigate('/cliente/dashboard')
     }
 
+    const HandleDelete = async (_id: string) => {
+        await api.deleteOrder(_id);
+        alert('Pedido removido com sucesso!')
+        navigate('/cliente/dashboard')
+    }
+
     return (
         <div className="orders-mobile-container">
             {hasUser &&
                 <>
                     <h1 className="orders-title">Meus Pedidos</h1>
                     {orders.map((order, key) => (
-                        <div className="orders-container orders-spacing">
-                            <div key={key} className="order">
+                        <div key={key} className="orders-container orders-spacing">
+                            <div className="order">
                                 <div className="row">
                                     <div className="field mobile-field" id="desc-field">
                                         <span className="desc-field-mobile">Descrição</span>
@@ -105,6 +109,11 @@ const Orders = ({ navigate }: Navigate) => {
                                 {order.statusdesc == 'Aguardando Pagamento' ?
                                     <div className="button-mobile-container">
                                         <button onClick={() => { HandlePayment(order._id) }} className="button-mobile button-green payment-button">Simular Pagamento</button>
+                                    </div> : <></>
+                                }
+                                {order.statusdesc == 'Pedido Rejeitado - Entre em contado para mais informações' ?
+                                    <div className="button-mobile-container">
+                                        <button onClick={() => { HandleDelete(order._id) }} className="button-mobile button-red payment-button">Remover Pedido</button>
                                     </div> : <></>
                                 }
                             </div>

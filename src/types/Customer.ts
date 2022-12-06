@@ -34,3 +34,13 @@ export type CustomerContext = {
     name: string,
     cnpj: string
 }
+
+export type CustomerEmailCnpj = {
+    email: boolean,
+    cnpj: boolean
+}
+
+export type CustomerEmailCnpjString = {
+    email: string;
+    cnpj: string;
+}

@@ -1,4 +1,4 @@
-import { CustomerAdd, CustomerLogin, CustomerLoginResponse } from "../types/Customer";
+import { CustomerAdd, CustomerEmailCnpj, CustomerEmailCnpjString, CustomerLogin, CustomerLoginResponse } from "../types/Customer";
 import { Order, OrderAdd } from "../types/Order";
 import { Customer as CustomerType } from "../types/Customer";
 
@@ -63,7 +63,7 @@ class Customer extends Api {
             body: JSON.stringify({ cnpj }),
             headers: { 'Content-Type': 'application/json' }
         })
-        return response.json();
+        return await response.json();
     }
 
     async getOrders(cnpj: string): Promise<Order[]> {
@@ -86,6 +86,26 @@ class Customer extends Api {
             body: JSON.stringify(orderUpdateInfo),
             headers: { 'Content-Type': 'application/json' }
         })
+    }
+
+    async deleteOrder(orderId: string) {
+        await fetch(this.baseApiPath + 'orders/delete', {
+            method: 'POST',
+            body: JSON.stringify({ orderId }),
+            headers: { 'Content-Type': 'application/json' }
+        })
+    }
+
+    async customerEmailCnpj(user: CustomerEmailCnpjString): Promise<CustomerEmailCnpj> {
+        const response = await fetch(this.baseApiPath + 'customers/emailcnpj', {
+            method: 'POST',
+            body: JSON.stringify(user),
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Request-Private-Network': 'true'
+            }
+        })
+        return await response.json();
     }
 
 }
