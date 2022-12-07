@@ -40,7 +40,6 @@ export const FormContent = ({ navigate }: Navigate) => {
 
         if (userCredentials.logged) {
 
-            
             if (userCredentials.customer) {
 
                 const { name, cnpj } = userCredentials.customer;
@@ -52,7 +51,7 @@ export const FormContent = ({ navigate }: Navigate) => {
                 if (setCustomer) {
                     setCustomer(loggedCustomer)
                 }
-    
+
                 navigate('/cliente/dashboard');
 
             }
